@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="description" content="TITANBOUND — a 3D creature collector adventure across eight wild regions." />
+  <title>TITANBOUND — A Creature Keeper's Odyssey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="./assets/index-DaAbS_SH.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Cs4yfdk-.css">
+</head>
+<body>
+  <div id="app">
+    <div id="scene-host"></div>
+    <div id="vignette"></div>
+    <div id="grain"></div>
+    <div id="flash"></div>
+
+    <div id="loading-screen" class="screen active">
+      <div class="load-emblem">✦</div>
+      <div class="load-title">TITANBOUND</div>
+      <div class="load-track"><div id="load-fill"></div></div>
+      <div class="load-copy">Waking the isles…</div>
+    </div>
+
+    <section id="title-screen" class="screen hidden">
+      <div class="title-topbar">
+        <div class="brand-mark"><span class="brand-sigil">✦</span><span>TITANBOUND</span></div>
+        <div class="title-top-meta">THE EIGHT ISLES AWAIT</div>
+      </div>
+      <div class="title-main">
+        <div class="title-kicker"><span></span>A CREATURE KEEPER'S ODYSSEY<span></span></div>
+        <h1 class="game-title">TITAN<span>BOUND</span></h1>
+        <p class="title-sub">Eight wild regions. Eight rival keepers.<br>One bond strong enough to move mountains.</p>
+        <div class="title-actions">
+          <button id="btn-new" class="btn btn-primary"><span>Begin the Journey</span><i>→</i></button>
+          <button id="btn-continue" class="btn btn-ghost hidden"><span>Continue</span><i>◈</i></button>
+        </div>
+        <div class="title-stats">
+          <div><strong>08</strong><span>REGIONS</span></div>
+          <div><strong>19</strong><span>ORIGINAL TITANS</span></div>
+          <div><strong>08</strong><span>GYM SIGILS</span></div>
+        </div>
+      </div>
+      <div class="title-footer">
+        <span>Drag to look · WASD to roam</span>
+        <span class="title-credit">An original 3D adventure</span>
+      </div>
+    </section>
+
+    <section id="creator-screen" class="screen hidden">
+      <div class="creator-top">
+        <div class="brand-mark small"><span class="brand-sigil">✦</span><span>TITANBOUND</span></div>
+        <div class="step-dots">
+          <span class="step-dot active" data-step="1"><b>01</b> Keeper</span>
+          <span class="step-line"></span>
+          <span class="step-dot" data-step="2"><b>02</b> Partner</span>
+        </div>
+        <button id="creator-back" class="icon-btn" title="Back">←</button>
+      </div>
+
+      <div id="creator-step-1" class="creator-layout">
+        <aside class="creator-panel glass">
+          <div class="panel-eyebrow">TRAINER DOSSIER</div>
+          <h2>Who will the titans<br><em>remember?</em></h2>
+          <div class="field">
+            <label for="trainer-name">KEEPER NAME</label>
+            <input id="trainer-name" maxlength="16" value="Aster" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label>TRAINER</label>
+            <div class="segmented" id="gender-select">
+              <button data-value="female" class="active"><span>♀</span> Female</button>
+              <button data-value="male"><span>♂</span> Male</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>SKIN TONE</label>
+            <div class="swatches" id="skin-select"></div>
+          </div>
+          <div class="field">
+            <label>HAIR</label>
+            <div class="hair-row" id="hair-style-select"></div>
+          </div>
+          <div class="field two-col">
+            <div>
+              <label>HAIR COLOR</label>
+              <div class="swatches compact" id="hair-color-select"></div>
+            </div>
+            <div>
+              <label>OUTFIT</label>
+              <div class="swatches compact" id="outfit-select"></div>
+            </div>
+          </div>
+          <div class="creator-actions">
+            <button id="btn-randomize" class="text-btn">✦ Surprise me</button>
+            <button id="btn-to-partner" class="btn btn-primary"><span>Choose a Partner</span><i>→</i></button>
+          </div>
+        </aside>
+        <div class="creator-hint glass-soft">
+          <div class="hint-icon">◉</div>
+          <div><strong>Your keeper</strong><span>Your look, your name, your legend. The isles will remember it.</span></div>
+        </div>
+      </div>
+
+      <div id="creator-step-2" class="creator-layout starter-layout hidden">
+        <div class="starter-heading">
+          <div class="panel-eyebrow">FIRST BOND</div>
+          <h2>Every legend starts<br>with a <em>friend.</em></h2>
+          <p>Three young titans have answered the call. Choose the one whose heart beats in time with yours.</p>
+        </div>
+        <div id="starter-cards" class="starter-cards"></div>
+        <div class="starter-actions">
+          <button id="btn-back-to-look" class="btn btn-ghost"><span>← Appearance</span></button>
+          <button id="btn-begin" class="btn btn-primary"><span>Begin the Journey</span><i>✦</i></button>
+        </div>
+      </div>
+    </section>
+
+    <div id="hud" class="hidden">
+      <div class="hud-top">
+        <div class="hud-left">
+          <div class="region-badge" id="hud-region">
+            <span class="region-index" id="hud-region-index">01</span>
+            <div><strong id="hud-region-name">Verdant Hollow</strong><span id="hud-region-sub">Where ancient roots dream</span></div>
+            <span class="region-type" id="hud-region-type">Bloom</span>
+          </div>
+          <div class="objective glass-soft" id="hud-objective">
+            <span class="obj-mark">◈</span><div><b>OBJECTIVE</b><span id="hud-objective-text">Reach the Amberstep Grove</span></div>
+          </div>
+        </div>
+        <div class="hud-center">
+          <div class="badge-rack glass-soft" id="badge-rack"></div>
+          <div class="keeper-chip" id="keeper-chip"><span id="keeper-initial">A</span><div><b id="keeper-name">Aster</b><i id="keeper-title">Novice Keeper</i></div></div>
+        </div>
+        <div class="hud-right">
+          <div class="minimap-wrap glass-soft">
+            <canvas id="minimap" width="320" height="320"></canvas>
+            <div class="map-n">N</div>
+            <div class="map-caption" id="map-caption">VERDANT HOLLOW</div>
+          </div>
+          <div class="hud-buttons">
+            <button class="hud-btn" id="btn-atlas" title="Atlas (M)"><span>◇</span><b>ATLAS</b></button>
+            <button class="hud-btn" id="btn-journal" title="Journal (C)"><span>✦</span><b>JOURNAL</b></button>
+            <button class="hud-btn" id="btn-sound" title="Sound"><span>♪</span><b>SOUND</b></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="interact-prompt" class="hidden">
+        <span class="keycap">E</span>
+        <div><b id="interact-label">Challenge</b><span id="interact-sub">Wild titan</span></div>
+      </div>
+
+      <div id="toast-stack"></div>
+      <div id="waypoint-arrow" class="hidden"></div>
+
+      <div class="hud-bottom">
+        <div class="party-dock" id="party-dock"></div>
+        <div class="control-hints">
+          <span><b>WASD</b> move</span><span><b>DRAG</b> look</span><span><b>E</b> interact</span><span><b>M</b> atlas</span><span><b>C</b> journal</span>
+        </div>
+        <div class="save-state" id="save-state">AUTOSAVED</div>
+      </div>
+
+      <div id="mobile-controls">
+        <div id="joystick"><div id="joystick-knob"></div></div>
+        <div class="mobile-actions">
+          <button id="mobile-journal" class="round-btn small">✦</button>
+          <button id="mobile-interact" class="round-btn">E</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="dialogue" class="hidden">
+      <div class="dialogue-portrait" id="dialogue-portrait">W</div>
+      <div class="dialogue-body">
+        <div class="dialogue-meta"><strong id="dialogue-name">Wren Thistle</strong><span id="dialogue-title">Rootbound Warden</span></div>
+        <p id="dialogue-text"></p>
+        <div id="dialogue-actions"></div>
+      </div>
+      <button id="dialogue-close" class="dialogue-close">×</button>
+    </div>
+
+    <div id="modal-layer" class="hidden"></div>
+
+    <div id="battle-ui" class="hidden">
+      <div class="battle-vignette"></div>
+      <div class="battle-top">
+        <div class="battle-region" id="battle-region">VERDANT HOLLOW · GYM</div>
+        <div class="battle-round"><span>TURN</span><b id="battle-turn">1</b></div>
+        <button id="battle-sound" class="icon-btn">♪</button>
+      </div>
+      <div class="enemy-panel battle-panel" id="enemy-panel">
+        <div class="combat-name"><span id="enemy-type-icon">❧</span><strong id="enemy-name">Thornox</strong><i id="enemy-level">LV 8</i></div>
+        <div class="hp-track"><div class="hp-fill" id="enemy-hp"></div></div>
+        <div class="hp-meta"><span id="enemy-hp-text">100 / 100</span><span id="enemy-status"></span></div>
+        <div class="team-pips" id="enemy-team"></div>
+      </div>
+      <div class="player-panel battle-panel" id="player-panel">
+        <div class="combat-name"><span id="player-type-icon">✦</span><strong id="player-battle-name">Mossling</strong><i id="player-level">LV 5</i></div>
+        <div class="hp-track"><div class="hp-fill player" id="player-hp"></div></div>
+        <div class="hp-meta"><span id="player-hp-text">100 / 100</span><span id="player-status"></span></div>
+        <div class="focus-row"><span>FOCUS</span><div class="focus-pips" id="focus-pips"></div></div>
+      </div>
+      <div class="battle-feed" id="battle-feed"></div>
+      <div class="battle-command glass" id="battle-command">
+        <div class="command-head"><span>WHAT WILL YOU DO?</span><button class="help-btn" id="battle-help">?</button></div>
+        <div class="move-grid" id="move-grid"></div>
+        <div class="command-actions">
+          <button id="btn-capture"><span>◉</span><b>Treat</b><i id="treat-count">0</i></button>
+          <button id="btn-swap"><span>⇄</span><b>Swap</b></button>
+          <button id="btn-brace"><span>◈</span><b>Brace</b></button>
+          <button id="btn-run"><span>↩</span><b>Flee</b></button>
+        </div>
+      </div>
+      <div id="treat-picker" class="hidden"></div>
+      <div id="battle-result" class="hidden"></div>
+      <div id="battle-tooltip" class="hidden"></div>
+    </div>
+  </div>
+</body>
+</html>

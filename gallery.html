@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="UTF-8"><title>Creature Gallery</title><style>body{margin:0;background:#1b2432;overflow:hidden;font-family:system-ui;color:#eee}#labels{position:fixed;inset:0;pointer-events:none;display:grid;grid-template-columns:repeat(5,1fr);align-content:end;padding:20px;gap:8px;font-size:11px;text-align:center;text-shadow:0 1px 3px #000}#labels div{background:#0008;padding:2px}</style></head><body>
+<div id="labels"></div><script type="module">
+import * as THREE from 'three'
+import { SPECIES } from './src/data.js'
+import { buildCreature } from './src/art.js'
+const renderer = new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true})
+renderer.setSize(1600,1000); renderer.shadowMap.enabled=true; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.1
+document.body.appendChild(renderer.domElement)
+const scene=new THREE.Scene(); scene.background=new THREE.Color('#2a3444'); scene.fog=new THREE.Fog('#2a3444',20,50)
+scene.add(new THREE.HemisphereLight('#d8e8ff','#332e2a',2.3))
+const key=new THREE.DirectionalLight('#fff0cf',4); key.position.set(6,18,14); key.castShadow=true; key.shadow.mapSize.set(2048,2048); key.shadow.camera.left=-25;key.shadow.camera.right=25;key.shadow.camera.top=20;key.shadow.camera.bottom=-20; scene.add(key)
+const rim=new THREE.DirectionalLight('#77ffe0',2.5); rim.position.set(-10,8,-14); scene.add(rim)
+const ground=new THREE.Mesh(new THREE.CircleGeometry(28,64),new THREE.MeshStandardMaterial({color:'#3f4a45',roughness:.95}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground)
+const labels=document.getElementById('labels')
+const ids=Object.keys(SPECIES)
+ids.forEach((id,i)=>{
+  const col=i%5,row=Math.floor(i/5)
+  const x=(col-2)*5.2,z=(row-1)*5.5
+  const m=buildCreature(id,{aura:false});m.position.set(x,0,z);m.rotation.y=0.2;scene.add(m)
+  const el=document.createElement('div');el.textContent=SPECIES[id].name;labels.appendChild(el)
+  m.userData.update?.(i,false)
+})
+const cam=new THREE.PerspectiveCamera(35,1.6,.1,130);cam.position.set(0,20,30);cam.lookAt(0,2,-3)
+function loop(t){requestAnimationFrame(loop);ids.forEach((id,i)=>{const col=i%5,row=Math.floor(i/5);});renderer.render(scene,cam)}
+requestAnimationFrame(loop)
+</script></body></html>
